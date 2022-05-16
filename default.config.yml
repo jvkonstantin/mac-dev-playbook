@@ -6,13 +6,43 @@ configure_terminal: true
 configure_osx: true
 
 # Set to 'true' to configure the Dock via dockutil.
-configure_dock: false
-dockitems_remove: []
-# - Launchpad
-# - TV
-# - Podcasts
-# - 'App Store'
-dockitems_persist: []
+configure_dock: true
+dockitems_remove: 
+  - TV
+  - Podcasts
+  - 'App Store'
+  - Messages
+  - Mail
+  - Maps
+  - Photos
+  - FaceTime
+  - Calendar
+  - Contacts
+  - Reminders
+  - Notes
+  - Music
+  - 'System Preferences'
+  - Safari
+
+
+dockitems_persist: 
+  - name: Launchpad
+    path: "/Applications/Launchpad.app"
+    pos: 2
+  - name: "Visual Studio Code"
+    path: "/Applications/Visual Studio Code.app"
+    pos: 3
+  - name: "Brave Browser"
+    path: "/Applications/Brave Browser.app"
+    pos: 4
+  - name: Xcode
+    path: "/Applications/Xcode.app"
+    pos: 5  
+  - name: iTerm
+    path: "/Applications/iTerm.app"
+    pos: 6
+  
+
 # - name: "Sublime Text"
 #   path: "/Applications/Sublime Text.app/"
 #   pos: 5
@@ -24,7 +54,7 @@ sudoers_custom_config: ''
 #   # Allow users in admin group to use sudo with no password.
 #   %admin ALL=(ALL) NOPASSWD: ALL
 
-dotfiles_repo: https://github.com/geerlingguy/dotfiles.git
+dotfiles_repo: https://github.com/jvkonstantin/dotfiles.git
 dotfiles_repo_accept_hostkey: true
 dotfiles_repo_local_destination: ~/Development/GitHub/dotfiles
 dotfiles_files:
@@ -39,6 +69,7 @@ homebrew_installed_packages:
   - autoconf
   - bash-completion
   - doxygen
+  - dockutil
   - gettext
   - gifsicle
   - git
@@ -61,6 +92,7 @@ homebrew_installed_packages:
   - pv
   - wget
   - wrk
+  - zsh-autosuggestions
   - zsh-history-substring-search
 
 homebrew_taps:
@@ -72,12 +104,18 @@ homebrew_cask_apps:
   - chromedriver
   - docker
   - dropbox
+  - eqmac
+  - spotify
   - firefox
   - google-chrome
   - handbrake
-  - licecap
+  - visual-studio-code
+  - mpv
+  - obs
+  - discord
   - sequel-ace
   - slack
+  - alfred
   - sublime-text
   - transmit
   - vagrant

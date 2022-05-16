@@ -1,54 +1,41 @@
----
 - hosts: all
-
-  vars_files:
-    - default.config.yml
-
   pre_tasks:
-    - name: Include playbook configuration.
-      include_vars: "{{ item }}"
-      with_fileglob:
-        - "{{ playbook_dir }}/config.yml"
-      tags: ['always']
-
+  - include_vars: '{{ item }}'
+    name: Include playbook configuration.
+    tags: [always]
+    with_fileglob: ['{{ playbook_dir }}/config.yml']
   roles:
-    - role: elliotweiser.osx-command-line-tools
-    - role: geerlingguy.mac.homebrew
-      tags: ['homebrew']
-    - role: geerlingguy.dotfiles
-      when: configure_dotfiles
-      tags: ['dotfiles']
-    - role: geerlingguy.mac.mas
-      when: mas_installed_apps or mas_installed_app_ids
-      tags: ['mas']
-    - role: geerlingguy.mac.dock
-      when: configure_dock
-      tags: ['dock']
-
+  - {role: elliotweiser.osx-command-line-tools}
+  - role: geerlingguy.mac.homebrew
+    tags: [homebrew]
+  - role: geerlingguy.dotfiles
+    tags: [dotfiles]
+    when: configure_dotfiles
+  - role: geerlingguy.mac.mas
+    tags: [mas]
+    when: mas_installed_apps or mas_installed_app_ids
+  
   tasks:
-    - import_tasks: tasks/sudoers.yml
-      when: configure_sudoers
-      tags: ['sudoers']
-
-    - import_tasks: tasks/terminal.yml
-      when: configure_terminal
-      tags: ['terminal']
-
-    - import_tasks: tasks/osx.yml
-      when: configure_osx
-      tags: ['osx']
-
-    - import_tasks: tasks/extra-packages.yml
-      tags: ['extra-packages']
-
-    - import_tasks: tasks/sublime-text.yml
-      when: configure_sublime
-      tags: ['sublime-text']
-
-    - block:
-        - name: Run configured post-provision ansible task files.
-          include_tasks: "{{ outer_item }}"
-          loop_control:
-            loop_var: outer_item
-          with_fileglob: "{{ post_provision_tasks|default(omit) }}"
-      tags: ['post']
+  - import_tasks: tasks/dock.yml
+    tags: [dock]
+    when: configure_dock
+  - import_tasks: tasks/omz-autosuggest.yaml
+    tags: [autoomz]
+  - import_tasks: tasks/sudoers.yml
+    tags: [sudoers]
+    when: configure_sudoers
+  - import_tasks: tasks/terminal.yml
+    tags: [terminal]
+    when: configure_terminal
+  - import_tasks: tasks/osx.yml
+    tags: [osx]
+    when: configure_osx
+  - import_tasks: tasks/extra-packages.yml
+    tags: [extra-packages]
+  - block:
+    - include_tasks: '{{ outer_item }}'
+      loop_control: {loop_var: outer_item}
+      name: Run configured post-provision ansible task files.
+      with_fileglob: '{{ post_provision_tasks|default(omit) }}'
+    tags: [post]
+  vars_files: [default.config.yml]

@@ -1,0 +1,6 @@
+---
+- name: OMZ AUTOSUGGEST GIT
+  ansible.builtin.git:
+    repo: 'https://github.com/zsh-users/zsh-autosuggestions'
+    dest: ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+    clone: yes
